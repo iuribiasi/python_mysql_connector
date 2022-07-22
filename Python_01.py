@@ -14,7 +14,7 @@ import pandas as pd
 usuario = 'teste'
 senha = 'teste'
 
-con = mysql.connector.connect(host='localhost', database='usersdb',user='root',password='2064casa')
+con = mysql.connector.connect(host='localhost', database='usersdb',user='root',password='senha')
 
 if con.is_connected():
     db_info = con.get_server_info()
