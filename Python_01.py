@@ -1,34 +1,40 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jun 17 12:48:00 2022
+Created on Fri Jul 22 20:35:29 2022
 
 @author: Iuri
 """
 
-
-
 import mysql.connector
+from mysql.connector import errorcode
 import pandas as pd
 
+try:
+  cnx = mysql.connector.connect(user='root',password='',
+                                database='baseteste')
+except mysql.connector.Error as err:
+  if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+    print("Something is wrong with your user name or password")
+  elif err.errno == errorcode.ER_BAD_DB_ERROR:
+    print("Database does not exist")
+  else:
+    print(err)
+else:
+  
+  cursor = cnx.cursor()    
+      
+  add_user = ("INSERT INTO users "
+                  "(username, password) "
+                  "VALUES ('iuri', 'teste')")
+  cursor.execute(add_user)
+  cnx.commit()
+       
+  cursor.execute("SELECT * FROM users")
+  resultusername = cursor.fetchall()
+  df = pd.DataFrame(resultusername, columns=['id', 'username', 'password'])
 
-usuario = 'teste'
-senha = 'teste'
+ 
 
-con = mysql.connector.connect(host='localhost', database='usersdb',user='root',password='senha')
-
-if con.is_connected():
-    db_info = con.get_server_info()
-    
-    checkusername = con.cursor()
-    checkusername.execute("SELECT * FROM users")
-    resultusername = checkusername.fetchall()
-
-        
-    for record in resultusername:        
-        if usuario == record[1]:
-            print('Login Correto')
-            if senha == record[2]:
-                print('Senha Correta')
-        
-                    
-df = pd.DataFrame(resultusername, columns=['id', 'usuario', 'senha'])                    
+ 
+  
+  cnx.close()
