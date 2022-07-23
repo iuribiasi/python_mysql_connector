@@ -9,6 +9,11 @@ import mysql.connector
 from mysql.connector import errorcode
 import pandas as pd
 
+
+""" 
+TRYING TO CONNECT IN DB WITH ERRORCODE
+""" 
+
 try:
   cnx = mysql.connector.connect(user='root',password='',
                                 database='baseteste')
@@ -20,15 +25,20 @@ except mysql.connector.Error as err:
   else:
     print(err)
 else:
-  
+ 
   cursor = cnx.cursor()    
-      
+
+""" 
+HOW TO INSERT USING CURSOR AND MYSQLCONNECTOR   
+
   add_user = ("INSERT INTO users "
                   "(username, password) "
                   "VALUES ('iuri', 'teste')")
   cursor.execute(add_user)
   cnx.commit()
-       
+  
+"""       
+
   cursor.execute("SELECT * FROM users")
   resultusername = cursor.fetchall()
   df = pd.DataFrame(resultusername, columns=['id', 'username', 'password'])
